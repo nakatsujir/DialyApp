@@ -8,9 +8,16 @@
         android:orientation="vertical"
         tools:context=".PreviewActivity">
 
+    <TextView
+            android:text="day"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:textSize="20sp"
+            android:id="@+id/edit_day_text"/>
     <ImageView
             android:layout_width="match_parent"
-            android:layout_height="200dp"
+            android:layout_height="250dp"
             android:background="@color/lightGray"
             android:id="@+id/edit_image"/>
     <EditText
@@ -20,6 +27,8 @@
             android:layout_marginRight="33dp"
             android:layout_marginLeft="33dp"
             android:layout_marginTop="5dp"
+            android:background="@drawable/title_flame"
+            android:textSize="14sp"
             android:id="@+id/edit_title_edit"/>
     <EditText
             android:hint="テキスト"
@@ -27,13 +36,15 @@
             android:layout_height="wrap_content"
             android:layout_marginRight="33dp"
             android:layout_marginLeft="33dp"
-            android:layout_marginTop="5dp"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/text_flame"
+            android:textSize="14sp"
             android:id="@+id/edit_text_edit"/>
     <Button
             android:text="保存"
             android:layout_width="match_parent"
-            android:layout_height="60dp"
-            android:layout_marginTop="50dp"
+            android:layout_height="50dp"
+            android:layout_marginTop="10dp"
             android:layout_marginRight="33dp"
             android:layout_marginLeft="33dp"
             android:id="@+id/edit_done_button"/>

@@ -18,7 +18,7 @@ class DiaryAdapter(context: Context):BaseAdapter() {
     override fun getView(position: Int, convertView: View?, parent: ViewGroup?): View {
         val view:View = convertView ?: layoutInflater.inflate(R.layout.diary_list,parent,false)
 
-        val listImage = view.findViewById<ImageView>(R.id.list_image)
+        val listImage = view.findViewById<View>(R.id.list_image)
         val dayText = view.findViewById<TextView>(R.id.list_day_text)
         val titleText = view.findViewById<TextView>(R.id.list_title_text)
 

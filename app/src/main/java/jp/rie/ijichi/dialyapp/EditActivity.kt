@@ -1,7 +1,9 @@
 package jp.rie.ijichi.dialyapp
 
+import android.app.DatePickerDialog
 import android.graphics.Bitmap
 import android.graphics.drawable.BitmapDrawable
+import android.icu.util.Calendar
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.preference.PreferenceManager
@@ -31,9 +33,14 @@ class EditActivity : AppCompatActivity() {
         mAuth = FirebaseAuth.getInstance()
 
 
-        edit_done_button.setOnClickListener { view ->
+        edit_done_button.setOnClickListener {
             diaryRegister()
         }
+
+        edit_day_text.setOnClickListener {
+            showDatePickerDialog()
+        }
+
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -55,39 +62,60 @@ class EditActivity : AppCompatActivity() {
             .setPositiveButton("OK") { dialog, which ->
 
             }
-            .setNegativeButton("CANCEL"){dialog, which ->
+            .setNegativeButton("CANCEL") { dialog, which ->
 
             }
             .show()
     }
 
-    private fun diaryRegister(){
-            val diaryRef = mDatabaseReference.child(DiaryPATH)
-            val data = HashMap<String,String>()
-            val title = edit_title_edit.text.toString()
-            val text = edit_text_edit.text.toString()
-            val image = edit_image.drawable as? BitmapDrawable
+    private fun diaryRegister() {
+        val diaryRef = mDatabaseReference.child(DiaryPATH)
+        val data = HashMap<String, String>()
+        val title = edit_title_edit.text.toString()
+        val text = edit_text_edit.text.toString()
+        val day = edit_day_text.text.toString()
+        val image = edit_image.drawable as? BitmapDrawable
 
-            if (image != null){
-                val bitmap = image.bitmap
-                val byte = ByteArrayOutputStream()
-                bitmap.compress(Bitmap.CompressFormat.JPEG,100,byte)
-                val bitmapString = Base64.encodeToString(byte.toByteArray(),Base64.DEFAULT)
-                data["image"] = bitmapString
+        if (image != null) {
+            val bitmap = image.bitmap
+            val byte = ByteArrayOutputStream()
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, byte)
+            val bitmapString = Base64.encodeToString(byte.toByteArray(), Base64.DEFAULT)
+            data["image"] = bitmapString
 
-            }
-            if (title.isEmpty()){
-                Toast.makeText(this,"タイトルを入力してください",Toast.LENGTH_SHORT).show()
-            }
-            if (text.isEmpty()){
-                Toast.makeText(this,"本文を入力してください",Toast.LENGTH_SHORT).show()
-            }
-            data["title"] = title
-            data["text"] = text
+        }
+        if (title.isEmpty()) {
+            Toast.makeText(this, "タイトルを入力してください", Toast.LENGTH_SHORT).show()
+        }
+        if (text.isEmpty()) {
+            Toast.makeText(this, "本文を入力してください", Toast.LENGTH_SHORT).show()
+        }
+        if (day.isEmpty()){
+            Toast.makeText(this, "日付を入力してください", Toast.LENGTH_SHORT).show()
+        }
+        data["title"] = title
+        data["text"] = text
+        data["day"] = day
 
-        diaryRef.push().setValue(data,this)
+        diaryRef.push().setValue(data)
 
+    }
 
+    private fun showDatePickerDialog() {
+        val calender = Calendar.getInstance()
+        val year = calender.get(Calendar.YEAR)
+        val month = calender.get(Calendar.MONTH)
+        val day = calender.get(Calendar.DAY_OF_MONTH)
+
+        val datePickerDialog = DatePickerDialog(
+            this,
+            DatePickerDialog.OnDateSetListener { _, year, month, dayOfMonth ->
+                val dataString = String.format("$year/$month/$dayOfMonth")
+                edit_day_text.text = dataString
+
+            }, year, month, day
+        )
+        datePickerDialog.show()
     }
 
 

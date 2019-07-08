@@ -10,7 +10,7 @@ tools:context=".PreviewActivity">
 
 <ImageView
         android:layout_width="match_parent"
-        android:layout_height="400dp"
+        android:layout_height="250dp"
         android:background="@color/lightGray"
         android:id="@+id/preview_image"/>
 <TextView
@@ -19,6 +19,8 @@ tools:context=".PreviewActivity">
         android:layout_marginRight="33dp"
         android:layout_marginLeft="33dp"
         android:layout_marginTop="20dp"
+        android:textSize="14sp"
+        android:background="@drawable/title_flame"
         android:id="@+id/preview_title_edit"/>
 <TextView
         android:layout_width="match_parent"
@@ -26,5 +28,7 @@ tools:context=".PreviewActivity">
         android:layout_marginRight="33dp"
         android:layout_marginLeft="33dp"
         android:layout_marginTop="10dp"
+        android:textSize="14sp"
+        android:background="@drawable/text_flame"
         android:id="@+id/preview_diary_edit"/>
 </LinearLayout>

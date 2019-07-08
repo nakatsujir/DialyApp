@@ -10,18 +10,31 @@
 
     <ImageView
             android:layout_width="match_parent"
-            android:layout_height="100dp" app:srcCompat="@mipmap/ic_launcher_round"
+            android:layout_height="200dp"
+            android:background="@color/lightGray"
             android:id="@+id/edit_image"/>
     <EditText
-            android:text="TextView"
+            android:hint="タイトル"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" android:id="@+id/edit_title_edit"/>
+            android:layout_height="wrap_content"
+            android:layout_marginRight="33dp"
+            android:layout_marginLeft="33dp"
+            android:layout_marginTop="5dp"
+            android:id="@+id/edit_title_edit"/>
     <EditText
-            android:text="TextView"
+            android:hint="テキスト"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" android:id="@+id/edit_text_edit"/>
+            android:layout_height="wrap_content"
+            android:layout_marginRight="33dp"
+            android:layout_marginLeft="33dp"
+            android:layout_marginTop="5dp"
+            android:id="@+id/edit_text_edit"/>
     <Button
-            android:text="Button"
+            android:text="保存"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" android:id="@+id/edit_done_button"/>
+            android:layout_height="60dp"
+            android:layout_marginTop="50dp"
+            android:layout_marginRight="33dp"
+            android:layout_marginLeft="33dp"
+            android:id="@+id/edit_done_button"/>
 </LinearLayout>

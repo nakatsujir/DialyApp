@@ -10,13 +10,21 @@ tools:context=".PreviewActivity">
 
 <ImageView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" app:srcCompat="@mipmap/ic_launcher_round" android:id="@+id/preview_image"/>
+        android:layout_height="400dp"
+        android:background="@color/lightGray"
+        android:id="@+id/preview_image"/>
 <TextView
-        android:text="TextView"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" android:id="@+id/preview_title_edit"/>
+        android:layout_height="wrap_content"
+        android:layout_marginRight="33dp"
+        android:layout_marginLeft="33dp"
+        android:layout_marginTop="20dp"
+        android:id="@+id/preview_title_edit"/>
 <TextView
-        android:text="TextView"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" android:id="@+id/preview_diary_edit"/>
+        android:layout_height="wrap_content"
+        android:layout_marginRight="33dp"
+        android:layout_marginLeft="33dp"
+        android:layout_marginTop="10dp"
+        android:id="@+id/preview_diary_edit"/>
 </LinearLayout>

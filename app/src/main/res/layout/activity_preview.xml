@@ -1,34 +1,42 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
-xmlns:android="http://schemas.android.com/apk/res/android"
-xmlns:tools="http://schemas.android.com/tools"
-xmlns:app="http://schemas.android.com/apk/res-auto"
-android:layout_width="match_parent"
-android:layout_height="match_parent"
-android:orientation="vertical"
-tools:context=".PreviewActivity">
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        tools:context=".PreviewActivity">
 
-<ImageView
-        android:layout_width="match_parent"
-        android:layout_height="250dp"
-        android:background="@color/lightGray"
-        android:id="@+id/preview_image"/>
-<TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginRight="33dp"
-        android:layout_marginLeft="33dp"
-        android:layout_marginTop="20dp"
-        android:textSize="14sp"
-        android:background="@drawable/title_flame"
-        android:id="@+id/preview_title_edit"/>
-<TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginRight="33dp"
-        android:layout_marginLeft="33dp"
-        android:layout_marginTop="10dp"
-        android:textSize="14sp"
-        android:background="@drawable/text_flame"
-        android:id="@+id/preview_diary_edit"/>
+    <TextView
+            android:text="day"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:textSize="20sp"
+            android:id="@+id/preview_day_text"/>
+
+    <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="250dp"
+            android:background="@color/lightGray"
+            android:id="@+id/preview_image"/>
+    <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="33dp"
+            android:layout_marginLeft="33dp"
+            android:layout_marginTop="20dp"
+            android:textSize="14sp"
+            android:background="@drawable/title_flame"
+            android:id="@+id/preview_title_edit"/>
+    <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="33dp"
+            android:layout_marginLeft="33dp"
+            android:layout_marginTop="10dp"
+            android:textSize="14sp"
+            android:background="@drawable/text_flame"
+            android:id="@+id/preview_text_edit"/>
 </LinearLayout>

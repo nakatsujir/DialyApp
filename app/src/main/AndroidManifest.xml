@@ -11,7 +11,9 @@
             android:theme="@style/AppTheme">
         <activity android:name=".EditActivity">
         </activity>
-        <activity android:name=".PreviewActivity">
+        <activity android:name=".PreviewActivity"
+                  android:parentActivityName=".MainActivity"
+                  android:label="プレビュー">
         </activity>
         <activity
                 android:name=".MainActivity"

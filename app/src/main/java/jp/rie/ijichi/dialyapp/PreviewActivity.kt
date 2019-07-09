@@ -1,8 +1,10 @@
 package jp.rie.ijichi.dialyapp
 
 import android.content.Intent
+import android.content.SharedPreferences
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
+import android.preference.PreferenceManager
 import android.view.Menu
 import android.view.MenuItem
 import com.google.firebase.auth.FirebaseAuth
@@ -12,10 +14,18 @@ import kotlinx.android.synthetic.main.activity_preview.*
 
 class PreviewActivity : AppCompatActivity() {
 
+
     private lateinit var mAuth: FirebaseAuth
     private lateinit var mDatabaseReference: DatabaseReference
 
-    private lateinit var mDialy:Diary
+    private lateinit var mDiary: Diary
+
+    private lateinit var day: String
+    private lateinit var title: String
+    private lateinit var text: String
+
+    private val isEdit = true
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -26,28 +36,40 @@ class PreviewActivity : AppCompatActivity() {
         mAuth = FirebaseAuth.getInstance()
 
         val extras = intent.extras
-        mDialy = extras.get("diary") as Diary
+        mDiary = extras.get("diary") as Diary
 
-        preview_day_text.text = mDialy.day
-        preview_title_edit.text = mDialy.title
-        preview_text_edit.text = mDialy.text
-
-
-
+        mDiary.let {
+            day = it.day
+            title = it.title
+            text = it.text
+            preview_day_text.text = day
+            preview_title_edit.text = title
+            preview_text_edit.text = text
+        }
 
 
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-        menuInflater.inflate(R.menu.menu_preview,menu)
+        menuInflater.inflate(R.menu.menu_preview, menu)
         return true
     }
 
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
-        when(item?.itemId){
+        when (item?.itemId) {
             R.id.menu_preview_edit -> {
-                val intent = Intent(this,EditActivity::class.java)
-                startActivity(intent)
+
+                PreferenceManager.getDefaultSharedPreferences(this).edit().apply {
+                    putBoolean(EDIT_TYPE, isEdit)
+                    commit()
+                }
+
+                Intent(this, EditActivity::class.java).apply {
+                    putExtra(KEY_DAY, day)
+                    putExtra(KEY_TITLE, title)
+                    putExtra(KEY_TEXT, text)
+                    startActivity(this)
+                }
             }
         }
         return super.onOptionsItemSelected(item)

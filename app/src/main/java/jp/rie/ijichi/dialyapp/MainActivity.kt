@@ -3,7 +3,9 @@ package jp.rie.ijichi.dialyapp
 import android.arch.lifecycle.Transformations.map
 import android.content.Intent
 import android.os.Bundle
+import android.preference.PreferenceManager
 import android.support.design.widget.Snackbar
+import android.support.v4.content.ContextCompat.startActivity
 import android.support.v4.view.accessibility.AccessibilityEventCompat.setAction
 import android.support.v7.app.AppCompatActivity;
 import android.util.Base64
@@ -18,32 +20,30 @@ import java.util.*
 import kotlin.collections.ArrayList
 
 class MainActivity : AppCompatActivity() {
-    companion object {
-        const val DAY_TEXT = "day_text"
-        const val TITLE_TEXT = "title_text"
-    }
 
     private lateinit var mAuth: FirebaseAuth
     private lateinit var mDatabaseReference: DatabaseReference
 
     private lateinit var adapter: DiaryAdapter
 
-    private lateinit var mDiaryArrayList:ArrayList<Diary>
+    private lateinit var mDiaryArrayList: ArrayList<Diary>
+
+    private val isEdit = false
 
     private val mEventListener = object : ChildEventListener {
         override fun onChildAdded(p0: DataSnapshot, p1: String?) {
-            val map = p0.value as Map<String,String>
-            val title = map["title"] ?:""
-            val text = map["text"] ?:""
-            val day = map["day"] ?:""
-            val imageString = map["image"] ?:""
+            val map = p0.value as Map<String, String>
+            val title = map["title"] ?: ""
+            val text = map["text"] ?: ""
+            val day = map["day"] ?: ""
+            val imageString = map["image"] ?: ""
             val bytes = if (imageString.isNotEmpty()) {
                 Base64.decode(imageString, Base64.DEFAULT)
             } else {
                 byteArrayOf()
             }
 
-            val diary = Diary(title,text,day,bytes)
+            val diary = Diary(title, text, day, bytes)
             mDiaryArrayList.add(diary)
             adapter.notifyDataSetChanged()
         }
@@ -76,8 +76,15 @@ class MainActivity : AppCompatActivity() {
         mAuth = FirebaseAuth.getInstance()
 
         main_fab.setOnClickListener { view ->
-            val intent = Intent(this, EditActivity::class.java)
-            startActivity(intent)
+            PreferenceManager.getDefaultSharedPreferences(this).edit().apply {
+                putBoolean(EDIT_TYPE, isEdit)
+                commit()
+            }
+
+            Intent(this, EditActivity::class.java).apply {
+                startActivity(this)
+            }
+
         }
 
         // ListView
@@ -94,9 +101,10 @@ class MainActivity : AppCompatActivity() {
         diaryRef.addChildEventListener(mEventListener)
 
         main_list_view.setOnItemClickListener { parent, view, position, id ->
-            val intent = Intent(this, PreviewActivity::class.java)
-            intent.putExtra("diary", mDiaryArrayList[position])
-            startActivity(intent)
+            Intent(this, PreviewActivity::class.java).apply {
+                putExtra("diary", mDiaryArrayList[position])
+                startActivity(this)
+            }
         }
 
 

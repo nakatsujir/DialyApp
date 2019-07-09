@@ -3,7 +3,6 @@ package jp.rie.ijichi.dialyapp
 import android.app.DatePickerDialog
 import android.graphics.Bitmap
 import android.graphics.drawable.BitmapDrawable
-import android.icu.util.Calendar
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.preference.PreferenceManager
@@ -16,7 +15,10 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 import kotlinx.android.synthetic.main.activity_edit.*
+import kotlinx.android.synthetic.main.activity_edit.view.*
 import java.io.ByteArrayOutputStream
+import java.util.*
+import kotlin.collections.HashMap
 
 class EditActivity : AppCompatActivity() {
 
@@ -39,6 +41,20 @@ class EditActivity : AppCompatActivity() {
 
         edit_day_text.setOnClickListener {
             showDatePickerDialog()
+        }
+
+        val preference = PreferenceManager.getDefaultSharedPreferences(this)
+        val editType = preference.getBoolean(EDIT_TYPE,false)
+        if (editType){
+            //受け取る
+            intent.extras.let {
+                val day = it.getString(KEY_DAY)
+                val title = it.getString(KEY_TITLE)
+                val text = it.getString(KEY_TEXT)
+                edit_day_text.text = day
+                edit_title_edit.setText(title)
+                edit_text_edit.setText(text)
+            }
         }
 
     }
@@ -90,7 +106,7 @@ class EditActivity : AppCompatActivity() {
         if (text.isEmpty()) {
             Toast.makeText(this, "本文を入力してください", Toast.LENGTH_SHORT).show()
         }
-        if (day.isEmpty()){
+        if (day.isEmpty()) {
             Toast.makeText(this, "日付を入力してください", Toast.LENGTH_SHORT).show()
         }
         data["title"] = title

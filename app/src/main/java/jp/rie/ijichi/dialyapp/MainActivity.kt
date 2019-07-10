@@ -63,11 +63,6 @@ class MainActivity : AppCompatActivity() {
         override fun onChildMoved(p0: DataSnapshot, p1: String?) {
             TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
         }
-
-
-
-
-
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -109,7 +104,6 @@ class MainActivity : AppCompatActivity() {
                 startActivity(this)
             }
         }
-
 
     }
 

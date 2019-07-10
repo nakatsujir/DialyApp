@@ -46,8 +46,6 @@ class PreviewActivity : AppCompatActivity() {
             preview_title_edit.text = title
             preview_text_edit.text = text
         }
-
-
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {

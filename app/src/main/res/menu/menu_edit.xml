@@ -5,4 +5,8 @@
           android:title="削除"
           app:showAsAction="ifRoom"/>
 
+    <item android:id="@+id/menu_edit_stop"
+          android:title="やめる"
+          app:showAsAction="ifRoom"/>
+
 </menu>

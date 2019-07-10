@@ -9,7 +9,7 @@
         tools:context=".PreviewActivity">
 
     <TextView
-            android:text="day"
+            android:text="日付を選択 ▼"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center"
@@ -20,7 +20,7 @@
     <ImageView
             android:layout_width="match_parent"
             android:layout_height="250dp"
-            android:background="@color/lightGray"
+            android:background="@color/transparent"
             android:id="@+id/edit_image" app:srcCompat="@android:drawable/ic_menu_gallery"/>
     <EditText
             android:hint="タイトル"
@@ -33,7 +33,7 @@
             android:textSize="14sp"
             android:id="@+id/edit_title_edit"/>
     <EditText
-            android:hint="テキスト"
+            android:hint="今日のできごと"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginRight="33dp"
@@ -43,11 +43,13 @@
             android:textSize="14sp"
             android:id="@+id/edit_text_edit"/>
     <Button
-            android:text="保存"
+            android:text="保存する"
             android:layout_width="match_parent"
-            android:layout_height="50dp"
+            android:layout_height="40dp"
             android:layout_marginTop="10dp"
             android:layout_marginRight="33dp"
             android:layout_marginLeft="33dp"
+            android:background="@color/colorAccent"
+            android:textColor="@color/white"
             android:id="@+id/edit_done_button"/>
 </LinearLayout>

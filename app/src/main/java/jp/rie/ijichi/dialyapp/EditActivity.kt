@@ -27,6 +27,7 @@ import android.widget.Toast
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
+import com.squareup.picasso.Picasso
 import com.tbruyelle.rxpermissions2.RxPermissions
 import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.activity_edit.*
@@ -87,6 +88,11 @@ class EditActivity : AppCompatActivity() {
                 edit_day_text.text = day
                 edit_title_edit.setText(title)
                 edit_text_edit.setText(text)
+                val image = mDiary.imageBytes
+                if (image.isNotEmpty()){
+                    val photo = BitmapFactory.decodeByteArray(image,0,image.size).copy(Bitmap.Config.ARGB_8888,true)
+                    edit_image.setImageBitmap(photo)
+                }
             }
             setTitle("編集")
             invalidateOptionsMenu()
@@ -101,10 +107,8 @@ class EditActivity : AppCompatActivity() {
             rxPermissions = RxPermissions(this)
             if (rxPermissions.isGranted(Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
                 showPhotoSelectionDialog()
-                Toast.makeText(this, "すでに許可されてる", Toast.LENGTH_SHORT).show()
             } else {
                 showPhotoSelectionDialog()
-                Toast.makeText(this, "許可されてない", Toast.LENGTH_SHORT).show()
             }
         }
     }
@@ -125,19 +129,29 @@ class EditActivity : AppCompatActivity() {
                 } catch (e: Exception) {
                     return
                 }
+                Picasso.with(this).load(uri).fit().centerInside().into(edit_image)
 
-                val imageWidth = image.width
-                val imageHeight = image.height
-                val scale = Math.min(500.toFloat() / imageWidth, 500.toFloat() / imageHeight)
+                //向きを直す
+//                val imageWidth = image.width
+//                val imageHeight = image.height
+//                val matrix = Matrix()
+//                matrix.postRotate(90f)
+//                val resizeImage = Bitmap.createBitmap(image, 0, 0, imageWidth, imageHeight, matrix, true)
+//                edit_image.setImageBitmap(resizeImage)
 
-                val matrix = Matrix()
-                matrix.postScale(scale, scale)
 
-                val resizeImage = Bitmap.createBitmap(image, 0, 0, imageWidth, imageHeight, matrix, true)
-
-                edit_image.setImageBitmap(resizeImage)
-
-                cameraFileUri = null
+//                val imageWidth = image.width
+//                val imageHeight = image.height
+//                val scale = Math.min(500.toFloat() / imageWidth, 500.toFloat() / imageHeight)
+//
+//                val matrix = Matrix()
+//                matrix.postScale(scale, scale)
+//
+//                val resizeImage = Bitmap.createBitmap(image, 0, 0, imageWidth, imageHeight, matrix, true)
+//
+//                edit_image.setImageBitmap(resizeImage)
+//
+//                cameraFileUri = null
 
             }
             REQUEST_CODE_LIBRALY -> {
@@ -148,22 +162,23 @@ class EditActivity : AppCompatActivity() {
                         val inputStream = contentResolver.openInputStream(it)
                         image = BitmapFactory.decodeStream(inputStream)
                         inputStream!!.close()
+                        Picasso.with(this).load(it).fit().centerInside().into(edit_image)
                     } catch (e: Exception) {
                         return
                     }
 
-                    val imageWidth = image.width
-                    val imageHeight = image.height
-                    val scale = Math.min(500.toFloat() / imageWidth, 500.toFloat() / imageHeight)
-
-                    val matrix = Matrix()
-                    matrix.postScale(scale, scale)
-
-                    val resizeImage = Bitmap.createBitmap(image, 0, 0, imageWidth, imageHeight, matrix, true)
-
-                    edit_image.setImageBitmap(resizeImage)
-
-                    cameraFileUri = null
+//                    val imageWidth = image.width
+//                    val imageHeight = image.height
+//                    val scale = Math.min(500.toFloat() / imageWidth, 500.toFloat() / imageHeight)
+//
+//                    val matrix = Matrix()
+//                    matrix.postScale(scale, scale)
+//
+//                    val resizeImage = Bitmap.createBitmap(image, 0, 0, imageWidth, imageHeight, matrix, true)
+//
+//                    edit_image.setImageBitmap(resizeImage)
+//
+//                    cameraFileUri = null
                 }
 
             }

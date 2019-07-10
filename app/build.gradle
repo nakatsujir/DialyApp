@@ -39,6 +39,7 @@ dependencies {
     implementation 'com.google.firebase:firebase-database:16.0.1' // この行を追加
     implementation 'com.tbruyelle.rxpermissions2:rxpermissions:0.9.4@aar'
     implementation 'io.reactivex.rxjava2:rxjava:2.1.5'
+    implementation 'com.squareup.picasso:picasso:2.5.2'
 }
 
 apply plugin: 'com.google.gms.google-services' // この行を追加

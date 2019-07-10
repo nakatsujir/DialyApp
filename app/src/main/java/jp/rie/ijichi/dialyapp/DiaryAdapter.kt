@@ -17,7 +17,6 @@ class DiaryAdapter(context: Context) : BaseAdapter() {
 
     private var diarylist = ArrayList<Diary>()
 
-
     override fun getView(position: Int, convertView: View?, parent: ViewGroup?): View {
         val view: View = convertView ?: layoutInflater.inflate(R.layout.diary_list, parent, false)
 
@@ -28,7 +27,7 @@ class DiaryAdapter(context: Context) : BaseAdapter() {
         titleText.text = diarylist[position].title
 
         val listImage = diarylist[position].imageBytes
-        if (listImage.isEmpty()) {
+        if (listImage.isNotEmpty()) {
             val image = BitmapFactory.decodeByteArray(listImage, 0, listImage.size).copy(Bitmap.Config.ARGB_8888, true)
             val imageView = view.findViewById<View>(R.id.list_image) as ImageView
             imageView.setImageBitmap(image)

@@ -2,6 +2,8 @@ package jp.rie.ijichi.dialyapp
 
 import android.content.Intent
 import android.content.SharedPreferences
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.preference.PreferenceManager
@@ -45,6 +47,11 @@ class PreviewActivity : AppCompatActivity() {
             preview_day_text.text = day
             preview_title_edit.text = title
             preview_text_edit.text = text
+            val image = it.imageBytes
+            if (image.isNotEmpty()){
+                val photo = BitmapFactory.decodeByteArray(image,0,image.size).copy(Bitmap.Config.ARGB_8888,true)
+                preview_image.setImageBitmap(photo)
+            }
         }
     }
 

@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "948467669586",
+    "firebase_url": "https://dialyapp-fe961.firebaseio.com",
+    "project_id": "dialyapp-fe961",
+    "storage_bucket": "dialyapp-fe961.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:948467669586:android:98302d94243fe8d6",
+        "android_client_info": {
+          "package_name": "jp.rie.ijichi.dialyapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "948467669586-ukrrhg4mekk4fng65pos5ags9ma3u2kp.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCmZn16meoucXZ3j2sq6B-3tVVLe05cKFo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "948467669586-ukrrhg4mekk4fng65pos5ags9ma3u2kp.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -11,6 +11,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Base64
 import android.view.Menu
 import android.view.MenuItem
+import android.view.View
 import com.google.firebase.FirebaseApp
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.*
@@ -91,6 +92,13 @@ class MainActivity : AppCompatActivity() {
 
         adapter.setDiaryArrayList(mDiaryArrayList)
         main_list_view.adapter = adapter
+
+        //TODO:main_message_textのオンオフ切り替えたい
+//        if (mDiaryArrayList.isEmpty()) {
+//            main_message_text.visibility = View.VISIBLE
+//        } else {
+//            main_message_text.visibility = View.GONE
+//        }
 
         //取得
         val diaryRef = mDatabaseReference.child(DiaryPATH)

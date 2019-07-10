@@ -112,61 +112,95 @@ class EditActivity : AppCompatActivity() {
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
 
-        if (requestCode != Activity.RESULT_OK) return
-        when (requestCode) {
-            REQUEST_CODE_CAMERA -> {
-                data?.data?.let {
-                    val image: Bitmap
-                    try {
-                        val contentResolver = contentResolver
-                        val inputStream = contentResolver.openInputStream(it)
-                        image = BitmapFactory.decodeStream(inputStream)
-                        inputStream!!.close()
-                    } catch (e: Exception) {
-                        return
-                    }
+        if (requestCode == REQUEST_CODE_CAMERA) {
 
-                    val imageWidth = image.width
-                    val imageHeight = image.height
-                    val scale = Math.min(500.toFloat() / imageWidth, 500.toFloat() / imageHeight)
-
-                    val matrix = Matrix()
-                    matrix.postScale(scale, scale)
-
-                    val resizeImage = Bitmap.createBitmap(image, 0, 0, imageWidth, imageHeight, matrix, true)
-
-                    edit_image.setImageBitmap(resizeImage)
-
+            if (requestCode != Activity.RESULT_OK) {
+                if (cameraFileUri != null) {
+                    contentResolver.delete(cameraFileUri, null, null)
                     cameraFileUri = null
-
                 }
+                return
             }
-            REQUEST_CODE_LIBRALY -> {
-                val uri = data?.data ?: cameraFileUri ?: return
-                val image: Bitmap
-                try {
-                    val contentResolver = contentResolver
-                    val inputStream = contentResolver.openInputStream(uri)
-                    image = BitmapFactory.decodeStream(inputStream)
-                    inputStream!!.close()
-                } catch (e: Exception) {
-                    return
-                }
+            val uri = if (data == null || data.data == null) cameraFileUri else data.data
 
-                val imageWidth = image.width
-                val imageHeight = image.height
-                val scale = Math.min(500.toFloat() / imageWidth, 500.toFloat() / imageHeight)
-
-                val matrix = Matrix()
-                matrix.postScale(scale, scale)
-
-                val resizeImage = Bitmap.createBitmap(image, 0, 0, imageWidth, imageHeight, matrix, true)
-
-                edit_image.setImageBitmap(resizeImage)
-
-                cameraFileUri = null
+            val image: Bitmap
+            try {
+                val contentResolver = contentResolver
+                val inputStream = contentResolver.openInputStream(uri!!)
+                image = BitmapFactory.decodeStream(inputStream)
+                inputStream!!.close()
+            } catch (e: Exception) {
+                return
             }
+
+            val imageWidth = image.width
+            val imageHeight = image.height
+            val scale = Math.min(500.toFloat() / imageWidth, 500.toFloat() / imageHeight)
+
+            val matrix = Matrix()
+            matrix.postScale(scale,scale)
+
+            val resizeImage = Bitmap.createBitmap(image,0,0,imageWidth,imageHeight,matrix,true)
+            edit_image.setImageBitmap(resizeImage)
+            cameraFileUri = null
+
         }
+
+//        if (requestCode != Activity.RESULT_OK) return
+//        when (requestCode) {
+//            REQUEST_CODE_CAMERA -> {
+//                data?.data?.let {
+//                    val image: Bitmap
+//                    try {
+//                        val contentResolver = contentResolver
+//                        val inputStream = contentResolver.openInputStream(it)
+//                        image = BitmapFactory.decodeStream(inputStream)
+//                        inputStream!!.close()
+//                    } catch (e: Exception) {
+//                        return
+//                    }
+//
+//                    val imageWidth = image.width
+//                    val imageHeight = image.height
+//                    val scale = Math.min(500.toFloat() / imageWidth, 500.toFloat() / imageHeight)
+//
+//                    val matrix = Matrix()
+//                    matrix.postScale(scale, scale)
+//
+//                    val resizeImage = Bitmap.createBitmap(image, 0, 0, imageWidth, imageHeight, matrix, true)
+//
+//                    edit_image.setImageBitmap(resizeImage)
+//
+//                    cameraFileUri = null
+//
+//                }
+//            }
+//            REQUEST_CODE_LIBRALY -> {
+//                val uri = data?.data ?: cameraFileUri ?: return
+//                val image: Bitmap
+//                try {
+//                    val contentResolver = contentResolver
+//                    val inputStream = contentResolver.openInputStream(uri)
+//                    image = BitmapFactory.decodeStream(inputStream)
+//                    inputStream!!.close()
+//                } catch (e: Exception) {
+//                    return
+//                }
+//
+//                val imageWidth = image.width
+//                val imageHeight = image.height
+//                val scale = Math.min(500.toFloat() / imageWidth, 500.toFloat() / imageHeight)
+//
+//                val matrix = Matrix()
+//                matrix.postScale(scale, scale)
+//
+//                val resizeImage = Bitmap.createBitmap(image, 0, 0, imageWidth, imageHeight, matrix, true)
+//
+//                edit_image.setImageBitmap(resizeImage)
+//
+//                cameraFileUri = null
+//            }
+//        }
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -195,7 +229,7 @@ class EditActivity : AppCompatActivity() {
                 mDatabaseReference.child(DiaryPATH).child(mDiary.diaryId).removeValue()
                 //ここに成功した時を追加したい
                 Toast.makeText(this, "削除しました。", Toast.LENGTH_SHORT).show()
-                val intent = Intent(this,MainActivity::class.java)
+                val intent = Intent(this, MainActivity::class.java)
                 startActivity(intent)
             }
             .setNegativeButton("CANCEL") { dialog, which ->

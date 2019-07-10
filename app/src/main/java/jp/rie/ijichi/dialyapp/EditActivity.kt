@@ -18,6 +18,7 @@ import android.preference.PreferenceManager
 import android.provider.DocumentsContract
 import android.provider.MediaStore
 import android.support.v4.app.ActivityCompat.startActivityForResult
+import android.support.v4.content.ContextCompat.startActivity
 import android.support.v7.app.AlertDialog
 import android.util.Base64
 import android.view.Menu
@@ -112,95 +113,62 @@ class EditActivity : AppCompatActivity() {
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
 
-        if (requestCode == REQUEST_CODE_CAMERA) {
+        if (requestCode != Activity.RESULT_OK) return
+        when (requestCode) {
+            REQUEST_CODE_CAMERA -> {
+                val uri = cameraFileUri
+                val image: Bitmap
+                try {
+                    val contentResolver = contentResolver
+                    val inputStream = contentResolver.openInputStream(uri)
+                    image = BitmapFactory.decodeStream(inputStream)
+                    inputStream!!.close()
+                } catch (e: Exception) {
+                    return
+                }
 
-            if (requestCode != Activity.RESULT_OK) {
-                if (cameraFileUri != null) {
-                    contentResolver.delete(cameraFileUri, null, null)
+                val imageWidth = image.width
+                val imageHeight = image.height
+                val scale = Math.min(500.toFloat() / imageWidth, 500.toFloat() / imageHeight)
+
+                val matrix = Matrix()
+                matrix.postScale(scale, scale)
+
+                val resizeImage = Bitmap.createBitmap(image, 0, 0, imageWidth, imageHeight, matrix, true)
+
+                edit_image.setImageBitmap(resizeImage)
+
+                cameraFileUri = null
+
+            }
+            REQUEST_CODE_LIBRALY -> {
+                data?.data.let {
+                    val image: Bitmap
+                    try {
+                        val contentResolver = contentResolver
+                        val inputStream = contentResolver.openInputStream(it)
+                        image = BitmapFactory.decodeStream(inputStream)
+                        inputStream!!.close()
+                    } catch (e: Exception) {
+                        return
+                    }
+
+                    val imageWidth = image.width
+                    val imageHeight = image.height
+                    val scale = Math.min(500.toFloat() / imageWidth, 500.toFloat() / imageHeight)
+
+                    val matrix = Matrix()
+                    matrix.postScale(scale, scale)
+
+                    val resizeImage = Bitmap.createBitmap(image, 0, 0, imageWidth, imageHeight, matrix, true)
+
+                    edit_image.setImageBitmap(resizeImage)
+
                     cameraFileUri = null
                 }
-                return
+
             }
-            val uri = if (data == null || data.data == null) cameraFileUri else data.data
-
-            val image: Bitmap
-            try {
-                val contentResolver = contentResolver
-                val inputStream = contentResolver.openInputStream(uri!!)
-                image = BitmapFactory.decodeStream(inputStream)
-                inputStream!!.close()
-            } catch (e: Exception) {
-                return
-            }
-
-            val imageWidth = image.width
-            val imageHeight = image.height
-            val scale = Math.min(500.toFloat() / imageWidth, 500.toFloat() / imageHeight)
-
-            val matrix = Matrix()
-            matrix.postScale(scale,scale)
-
-            val resizeImage = Bitmap.createBitmap(image,0,0,imageWidth,imageHeight,matrix,true)
-            edit_image.setImageBitmap(resizeImage)
-            cameraFileUri = null
-
         }
-
-//        if (requestCode != Activity.RESULT_OK) return
-//        when (requestCode) {
-//            REQUEST_CODE_CAMERA -> {
-//                data?.data?.let {
-//                    val image: Bitmap
-//                    try {
-//                        val contentResolver = contentResolver
-//                        val inputStream = contentResolver.openInputStream(it)
-//                        image = BitmapFactory.decodeStream(inputStream)
-//                        inputStream!!.close()
-//                    } catch (e: Exception) {
-//                        return
-//                    }
-//
-//                    val imageWidth = image.width
-//                    val imageHeight = image.height
-//                    val scale = Math.min(500.toFloat() / imageWidth, 500.toFloat() / imageHeight)
-//
-//                    val matrix = Matrix()
-//                    matrix.postScale(scale, scale)
-//
-//                    val resizeImage = Bitmap.createBitmap(image, 0, 0, imageWidth, imageHeight, matrix, true)
-//
-//                    edit_image.setImageBitmap(resizeImage)
-//
-//                    cameraFileUri = null
-//
-//                }
-//            }
-//            REQUEST_CODE_LIBRALY -> {
-//                val uri = data?.data ?: cameraFileUri ?: return
-//                val image: Bitmap
-//                try {
-//                    val contentResolver = contentResolver
-//                    val inputStream = contentResolver.openInputStream(uri)
-//                    image = BitmapFactory.decodeStream(inputStream)
-//                    inputStream!!.close()
-//                } catch (e: Exception) {
-//                    return
-//                }
-//
-//                val imageWidth = image.width
-//                val imageHeight = image.height
-//                val scale = Math.min(500.toFloat() / imageWidth, 500.toFloat() / imageHeight)
-//
-//                val matrix = Matrix()
-//                matrix.postScale(scale, scale)
-//
-//                val resizeImage = Bitmap.createBitmap(image, 0, 0, imageWidth, imageHeight, matrix, true)
-//
-//                edit_image.setImageBitmap(resizeImage)
-//
-//                cameraFileUri = null
-//            }
-//        }
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {

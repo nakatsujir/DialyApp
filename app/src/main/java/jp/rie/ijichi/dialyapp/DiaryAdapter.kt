@@ -29,9 +29,9 @@ class DiaryAdapter(context: Context) : BaseAdapter() {
 
         val listImage = diarylist[position].imageBytes
         if (listImage.isEmpty()) {
-//            val image = BitmapFactory.decodeByteArray(listImage, 0, listImage.size).copy(Bitmap.Config.ARGB_8888, true)
-//            val imageView = view.findViewById<View>(R.id.list_image) as ImageView
-//            imageView.setImageBitmap(image)
+            val image = BitmapFactory.decodeByteArray(listImage, 0, listImage.size).copy(Bitmap.Config.ARGB_8888, true)
+            val imageView = view.findViewById<View>(R.id.list_image) as ImageView
+            imageView.setImageBitmap(image)
         }
         return view
     }

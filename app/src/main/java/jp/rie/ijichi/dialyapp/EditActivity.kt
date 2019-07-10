@@ -98,7 +98,6 @@ class EditActivity : AppCompatActivity() {
         }
 
         edit_image.setOnClickListener {
-            showPhotoSelectionDialog()
             rxPermissions = RxPermissions(this)
             if (rxPermissions.isGranted(Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
                 showPhotoSelectionDialog()
@@ -113,7 +112,7 @@ class EditActivity : AppCompatActivity() {
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
 
-        if (requestCode != Activity.RESULT_OK) return
+        if (requestCode != REQUEST_CODE_CAMERA && requestCode != REQUEST_CODE_LIBRALY) return
         when (requestCode) {
             REQUEST_CODE_CAMERA -> {
                 val uri = cameraFileUri

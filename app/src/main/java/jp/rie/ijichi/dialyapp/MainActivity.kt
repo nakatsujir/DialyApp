@@ -43,35 +43,27 @@ class MainActivity : AppCompatActivity() {
                 byteArrayOf()
             }
 
-            val diary = Diary(title, text, day, bytes)
+            val diary = Diary(title, text, day, p0.key ?: "", bytes)
             mDiaryArrayList.add(diary)
             adapter.notifyDataSetChanged()
         }
 
         override fun onChildChanged(p0: DataSnapshot, p1: String?) {
-            TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
         }
 
         override fun onChildRemoved(p0: DataSnapshot) {
-            TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
         }
 
         override fun onCancelled(p0: DatabaseError) {
-            TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
         }
 
         override fun onChildMoved(p0: DataSnapshot, p1: String?) {
-            TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
         }
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-
-        mDatabaseReference = FirebaseDatabase.getInstance().reference
-
-        mAuth = FirebaseAuth.getInstance()
 
         main_fab.setOnClickListener { view ->
             PreferenceManager.getDefaultSharedPreferences(this).edit().apply {
@@ -82,9 +74,15 @@ class MainActivity : AppCompatActivity() {
             Intent(this, EditActivity::class.java).apply {
                 startActivity(this)
             }
-
         }
 
+    }
+
+    override fun onResume() {
+        super.onResume()
+        mDatabaseReference = FirebaseDatabase.getInstance().reference
+
+        mAuth = FirebaseAuth.getInstance()
         // ListView
         adapter = DiaryAdapter(this)
         mDiaryArrayList = ArrayList<Diary>()
@@ -104,12 +102,6 @@ class MainActivity : AppCompatActivity() {
                 startActivity(this)
             }
         }
-
-    }
-
-    override fun onResume() {
-        //取得
-        super.onResume()
     }
 
 

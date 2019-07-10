@@ -66,6 +66,7 @@ class PreviewActivity : AppCompatActivity() {
                     putExtra(KEY_DAY, day)
                     putExtra(KEY_TITLE, title)
                     putExtra(KEY_TEXT, text)
+                    putExtra("diary",mDiary)
                     startActivity(this)
                 }
             }

@@ -47,6 +47,8 @@ class EditActivity : AppCompatActivity() {
     private lateinit var mAuth: FirebaseAuth
     private lateinit var mDatabaseReference: DatabaseReference
 
+    private lateinit var mDiary: Diary
+
     private lateinit var rxPermissions: RxPermissions
 
     private var cameraFileUri: Uri? = null
@@ -64,7 +66,6 @@ class EditActivity : AppCompatActivity() {
 
         mAuth = FirebaseAuth.getInstance()
 
-
         edit_done_button.setOnClickListener {
             diaryRegister()
         }
@@ -78,6 +79,7 @@ class EditActivity : AppCompatActivity() {
         if (editType) {
             //編集時
             intent.extras.let {
+                mDiary = it.get("diary") as Diary
                 val day = it.getString(KEY_DAY)
                 val title = it.getString(KEY_TITLE)
                 val text = it.getString(KEY_TEXT)
@@ -176,7 +178,6 @@ class EditActivity : AppCompatActivity() {
         super.onPrepareOptionsMenu(menu)
         menu?.findItem(R.id.menu_edit_delete)?.isVisible = isDeleteMenuVisible
         return true
-
     }
 
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
@@ -189,8 +190,13 @@ class EditActivity : AppCompatActivity() {
 
     private fun deleteDialog() {
         AlertDialog.Builder(this)
-            .setTitle("この記録を削除しますか？")
+            .setTitle("この記録を削除しますか？\nこの操作は取り消せません")
             .setPositiveButton("OK") { dialog, which ->
+                mDatabaseReference.child(DiaryPATH).child(mDiary.diaryId).removeValue()
+                //ここに成功した時を追加したい
+                Toast.makeText(this, "削除しました。", Toast.LENGTH_SHORT).show()
+                val intent = Intent(this,MainActivity::class.java)
+                startActivity(intent)
             }
             .setNegativeButton("CANCEL") { dialog, which ->
             }
@@ -211,7 +217,6 @@ class EditActivity : AppCompatActivity() {
             bitmap.compress(Bitmap.CompressFormat.JPEG, 100, byte)
             val bitmapString = Base64.encodeToString(byte.toByteArray(), Base64.DEFAULT)
             data["image"] = bitmapString
-
         }
         if (title.isEmpty()) {
             Toast.makeText(this, "タイトルを入力してください", Toast.LENGTH_SHORT).show()
@@ -228,7 +233,7 @@ class EditActivity : AppCompatActivity() {
 
         diaryRef.push().setValue(data)
         Toast.makeText(this, "保存しました。", Toast.LENGTH_SHORT).show()
-
+        finish()
     }
 
     private fun showDatePickerDialog() {
@@ -260,7 +265,6 @@ class EditActivity : AppCompatActivity() {
                 }
             }
         }).show()
-
     }
 
     private fun showRequestPermission(isCamera: Boolean, transitionCallback: () -> Unit) {
@@ -302,6 +306,7 @@ class EditActivity : AppCompatActivity() {
         intent.type = "image/*"
         startActivityForResult(intent, REQUEST_CODE_LIBRALY)
     }
+
 }
 
 

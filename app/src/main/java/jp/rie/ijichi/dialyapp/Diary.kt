@@ -7,6 +7,8 @@ class Diary (
     val text:String,
     val day:String,
     val diaryId:String,
+    val name:String,
+    val uid:String,
     bytes:ByteArray
 ):Serializable{
     val imageBytes:ByteArray

@@ -247,6 +247,12 @@ class EditActivity : AppCompatActivity() {
         data["text"] = text
         data["day"] = day
 
+        data["uid"] = FirebaseAuth.getInstance().currentUser!!.uid
+
+        val sp = PreferenceManager.getDefaultSharedPreferences(this)
+        val name = sp.getString(NAME_KEY,"") ?:""
+        data["name"] = name
+
         diaryRef.push().setValue(data)
         Toast.makeText(this, "保存しました。", Toast.LENGTH_SHORT).show()
         finish()

@@ -38,15 +38,20 @@ class MainActivity : AppCompatActivity() {
             val text = map["text"] ?: ""
             val day = map["day"] ?: ""
             val imageString = map["image"] ?: ""
+            val name = map["name"] ?: ""
+            val uid = map["uid"] ?: ""
             val bytes = if (imageString.isNotEmpty()) {
                 Base64.decode(imageString, Base64.DEFAULT)
             } else {
                 byteArrayOf()
             }
 
-            val diary = Diary(title, text, day, p0.key ?: "", bytes)
+            val diary = Diary(title, text, day, p0.key ?: "", name, uid, bytes)
             mDiaryArrayList.add(diary)
             adapter.notifyDataSetChanged()
+
+            main_message_text.visibility = View.GONE
+            main_list_view.visibility = View.VISIBLE
         }
 
         override fun onChildChanged(p0: DataSnapshot, p1: String?) {
@@ -67,16 +72,21 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
         main_fab.setOnClickListener { view ->
-            PreferenceManager.getDefaultSharedPreferences(this).edit().apply {
-                putBoolean(EDIT_TYPE, isEdit)
-                commit()
-            }
+            val user = FirebaseAuth.getInstance().currentUser
+            if (user == null) {
+                val intent = Intent(this, LoginActivity::class.java)
+                startActivity(intent)
+            } else {
+                PreferenceManager.getDefaultSharedPreferences(this).edit().apply {
+                    putBoolean(EDIT_TYPE, isEdit)
+                    commit()
+                }
 
-            Intent(this, EditActivity::class.java).apply {
-                startActivity(this)
+                Intent(this, EditActivity::class.java).apply {
+                    startActivity(this)
+                }
             }
         }
-
     }
 
     override fun onResume() {
@@ -93,23 +103,25 @@ class MainActivity : AppCompatActivity() {
         adapter.setDiaryArrayList(mDiaryArrayList)
         main_list_view.adapter = adapter
 
-        //TODO:main_message_textのオンオフ切り替えたい
-//        if (mDiaryArrayList.isEmpty()) {
-//            main_message_text.visibility = View.VISIBLE
-//        } else {
-//            main_message_text.visibility = View.GONE
-//        }
-
         //取得
         val diaryRef = mDatabaseReference.child(DiaryPATH)
         diaryRef.addChildEventListener(mEventListener)
 
         main_list_view.setOnItemClickListener { parent, view, position, id ->
-            Intent(this, PreviewActivity::class.java).apply {
-                putExtra("diary", mDiaryArrayList[position])
-                startActivity(this)
+            val user = FirebaseAuth.getInstance().currentUser
+            if (user == null){
+                val intent = Intent(this, LoginActivity::class.java)
+                startActivity(intent)
+            }else{
+                Intent(this, PreviewActivity::class.java).apply {
+                    putExtra("diary", mDiaryArrayList[position])
+                    startActivity(this)
+                }
             }
+
         }
+        main_message_text.visibility = View.VISIBLE
+        main_list_view.visibility = View.GONE
     }
 
 

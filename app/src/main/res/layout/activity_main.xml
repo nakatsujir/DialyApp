@@ -7,20 +7,21 @@
         android:layout_height="match_parent"
         tools:context=".MainActivity">
 
+    <TextView
+            android:text="日記をつけましょう。\n日記はボタンから作成できます。"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal|center"
+            android:textSize="18sp"
+            android:visibility="invisible"
+            android:id="@+id/main_message_text"/>
+
 
     <ListView
             android:id="@+id/main_list_view"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
     </ListView>
-    <TextView
-            android:text="日記がまだありません。\n日記をつけましょう。\n日記はボタンから作成できます。"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal|center"
-            android:textSize="16sp"
-            android:visibility="invisible"
-            android:id="@+id/main_message_text"/>
 
 
     <android.support.design.widget.FloatingActionButton

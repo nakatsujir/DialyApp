@@ -1,7 +1,6 @@
-package jp.rie.ijichi.dialyapp
+package jp.rie.ijichi.diary
 
 import android.content.Intent
-import android.content.SharedPreferences
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.support.v7.app.AppCompatActivity

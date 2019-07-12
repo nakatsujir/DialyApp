@@ -1,4 +1,4 @@
-package jp.rie.ijichi.dialyapp
+package jp.rie.ijichi.diary
 
 import android.content.Context
 import android.support.v7.app.AppCompatActivity

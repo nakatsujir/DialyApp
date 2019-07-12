@@ -1,4 +1,4 @@
-package jp.rie.ijichi.dialyapp
+package jp.rie.ijichi.diary
 
 const val DiaryPATH = "diary"
 const val KEY_DAY = "key_day"

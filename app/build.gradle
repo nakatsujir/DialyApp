@@ -7,7 +7,7 @@ apply plugin: 'kotlin-android-extensions'
 android {
     compileSdkVersion 28
     defaultConfig {
-        applicationId "jp.rie.ijichi.dialyapp"
+        applicationId "jp.rie.ijichi.diary"
         minSdkVersion 15
         targetSdkVersion 28
         versionCode 1

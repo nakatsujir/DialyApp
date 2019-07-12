@@ -1,24 +1,15 @@
-package jp.rie.ijichi.dialyapp
+package jp.rie.ijichi.diary
 
-import android.arch.lifecycle.Transformations.map
 import android.content.Intent
 import android.os.Bundle
 import android.preference.PreferenceManager
-import android.support.design.widget.Snackbar
-import android.support.v4.content.ContextCompat.startActivity
-import android.support.v4.view.accessibility.AccessibilityEventCompat.setAction
 import android.support.v7.app.AppCompatActivity;
 import android.util.Base64
-import android.view.Menu
-import android.view.MenuItem
 import android.view.View
-import com.google.firebase.FirebaseApp
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.*
 
 import kotlinx.android.synthetic.main.activity_main.*
-import kotlinx.android.synthetic.main.activity_main.view.*
-import java.util.*
 import kotlin.collections.ArrayList
 
 class MainActivity : AppCompatActivity() {

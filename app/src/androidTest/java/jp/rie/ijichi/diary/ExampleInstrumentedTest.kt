@@ -1,4 +1,4 @@
-package jp.rie.ijichi.dialyapp
+package jp.rie.ijichi.diary
 
 import android.support.test.InstrumentationRegistry
 import android.support.test.runner.AndroidJUnit4
@@ -19,6 +19,6 @@ class ExampleInstrumentedTest {
     fun useAppContext() {
         // Context of the app under test.
         val appContext = InstrumentationRegistry.getTargetContext()
-        assertEquals("jp.rie.ijichi.dialyapp", appContext.packageName)
+        assertEquals("jp.rie.ijichi.diary", appContext.packageName)
     }
 }

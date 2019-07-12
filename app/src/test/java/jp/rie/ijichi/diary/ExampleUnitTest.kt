@@ -1,4 +1,4 @@
-package jp.rie.ijichi.dialyapp
+package jp.rie.ijichi.diary
 
 import org.junit.Test
 

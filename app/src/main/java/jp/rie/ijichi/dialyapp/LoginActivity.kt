@@ -24,11 +24,6 @@ class LoginActivity : AppCompatActivity() {
 
     private var mIsCreateAccount = false
 
-//    private val email = login_email_text.text.toString()
-//    private val password = login_password_edit.text.toString()
-//    private val name = login_name_text.text.toString()
-
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)

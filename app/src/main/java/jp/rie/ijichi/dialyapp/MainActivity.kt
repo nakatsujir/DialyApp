@@ -17,6 +17,7 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.*
 
 import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.android.synthetic.main.activity_main.view.*
 import java.util.*
 import kotlin.collections.ArrayList
 
@@ -104,15 +105,18 @@ class MainActivity : AppCompatActivity() {
         main_list_view.adapter = adapter
 
         //取得
-        val diaryRef = mDatabaseReference.child(DiaryPATH)
-        diaryRef.addChildEventListener(mEventListener)
+        val user = FirebaseAuth.getInstance().currentUser
+        if (user != null) {
+            val diaryRef = mDatabaseReference.child(DiaryPATH).child(user.uid)
+            diaryRef.addChildEventListener(mEventListener)
+        }
 
         main_list_view.setOnItemClickListener { parent, view, position, id ->
             val user = FirebaseAuth.getInstance().currentUser
-            if (user == null){
+            if (user == null) {
                 val intent = Intent(this, LoginActivity::class.java)
                 startActivity(intent)
-            }else{
+            } else {
                 Intent(this, PreviewActivity::class.java).apply {
                     putExtra("diary", mDiaryArrayList[position])
                     startActivity(this)
@@ -120,6 +124,11 @@ class MainActivity : AppCompatActivity() {
             }
 
         }
+
+        val sp = PreferenceManager.getDefaultSharedPreferences(this)
+        val name = sp.getString(NAME_KEY, "")
+        main_user_name_text.text = String.format("${name}さんのDiary")
+
         main_message_text.visibility = View.VISIBLE
         main_list_view.visibility = View.GONE
     }

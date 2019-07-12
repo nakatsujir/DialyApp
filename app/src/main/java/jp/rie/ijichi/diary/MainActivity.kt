@@ -108,10 +108,9 @@ class MainActivity : AppCompatActivity() {
                 val intent = Intent(this, LoginActivity::class.java)
                 startActivity(intent)
             } else {
-                Intent(this, PreviewActivity::class.java).apply {
-                    putExtra("diary", mDiaryArrayList[position])
-                    startActivity(this)
-                }
+                val intent = Intent(this, PreviewActivity::class.java)
+                    intent.putExtra("diary", mDiaryArrayList[position])
+                    startActivity(intent)
             }
 
         }

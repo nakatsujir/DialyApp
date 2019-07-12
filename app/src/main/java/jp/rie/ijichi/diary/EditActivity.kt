@@ -112,70 +112,12 @@ class EditActivity : AppCompatActivity() {
         when (requestCode) {
             REQUEST_CODE_CAMERA -> {
                 val uri = cameraFileUri ?: return
-                val image: Bitmap
-                try {
-                    val contentResolver = contentResolver
-                    val inputStream = contentResolver.openInputStream(uri)
-                    image = BitmapFactory.decodeStream(inputStream)
-                    inputStream!!.close()
-                    edit_image.setImageBitmap(pictureTurn(image, uri))
-                } catch (e: Exception) {
-                    return
-                }
-
-
-//                Picasso.with(this).load(uri).fit().centerInside().into(edit_image)
-
-                //向きを直す
-//                val imageWidth = image.width
-//                val imageHeight = image.height
-//                val matrix = Matrix()
-//                matrix.postRotate(90f)
-//                val resizeImage = Bitmap.createBitmap(image, 0, 0, imageWidth, imageHeight, matrix, true)
-//                edit_image.setImageBitmap(resizeImage)
-
-
-//                val imageWidth = image.width
-//                val imageHeight = image.height
-//                val scale = Math.min(500.toFloat() / imageWidth, 500.toFloat() / imageHeight)
-//
-//                val matrix = Matrix()
-//                matrix.postScale(scale, scale)
-//
-//                val resizeImage = Bitmap.createBitmap(image, 0, 0, imageWidth, imageHeight, matrix, true)
-//
-//                edit_image.setImageBitmap(resizeImage)
-//
-//                cameraFileUri = null
+                setImage(uri)
 
             }
             REQUEST_CODE_LIBRALY -> {
                 val uri = data?.data ?: cameraFileUri ?: return
-                val image: Bitmap
-                try {
-                    val contentResolver = contentResolver
-                    val inputStream = contentResolver.openInputStream(uri)
-                    image = BitmapFactory.decodeStream(inputStream)
-                    inputStream!!.close()
-                    edit_image.setImageBitmap(pictureTurn(image, uri))
-//                        Picasso.with(this).load(it).fit().centerInside().into(edit_image)
-                } catch (e: Exception) {
-                    return
-                }
-
-//                    val imageWidth = image.width
-//                    val imageHeight = image.height
-//                    val scale = Math.min(500.toFloat() / imageWidth, 500.toFloat() / imageHeight)
-//
-//                    val matrix = Matrix()
-//                    matrix.postScale(scale, scale)
-//
-//                    val resizeImage = Bitmap.createBitmap(image, 0, 0, imageWidth, imageHeight, matrix, true)
-//
-//                    edit_image.setImageBitmap(resizeImage)
-//
-//                    cameraFileUri = null
-
+                setImage(uri)
             }
         }
     }
@@ -199,19 +141,47 @@ class EditActivity : AppCompatActivity() {
         return super.onOptionsItemSelected(item)
     }
 
+    private fun setImage(uri: Uri) {
+        val image: Bitmap
+        try {
+            val contentResolver = contentResolver
+            val inputStream = contentResolver.openInputStream(uri)
+            image = BitmapFactory.decodeStream(inputStream)
+            inputStream!!.close()
+        } catch (e: Exception) {
+            return
+        }
+
+        val imageWidth = image.width
+        val imageHeight = image.height
+        val scale = Math.min(500.toFloat() / imageWidth, 500.toFloat() / imageHeight)
+
+        val matrix = Matrix()
+        matrix.postScale(scale, scale)
+
+        val resizeImage = Bitmap.createBitmap(image, 0, 0, imageWidth, imageHeight, matrix, true)
+
+        edit_image.setImageBitmap(pictureTurn(resizeImage, uri))
+
+        cameraFileUri = null
+    }
+
     private fun deleteDialog() {
-        AlertDialog.Builder(this)
-            .setTitle("この記録を削除しますか？\nこの操作は取り消せません")
-            .setPositiveButton("OK") { dialog, which ->
-                mDatabaseReference.child(DiaryPATH).child(mDiary.diaryId).removeValue()
-                //ここに成功した時を追加したい
-                Toast.makeText(this, "削除しました。", Toast.LENGTH_SHORT).show()
-                val intent = Intent(this, MainActivity::class.java)
-                startActivity(intent)
-            }
-            .setNegativeButton("CANCEL") { dialog, which ->
-            }
-            .show()
+        val user = FirebaseAuth.getInstance().currentUser
+        if (user != null) {
+            AlertDialog.Builder(this)
+                .setTitle("この記録を削除しますか？\nこの操作は取り消せません")
+                .setPositiveButton("OK") { dialog, which ->
+                    mDatabaseReference.child(DiaryPATH).child(user.uid).child(mDiary.diaryId).removeValue()
+                    //ここに成功した時を追加したい
+                    Toast.makeText(this, "削除しました。", Toast.LENGTH_SHORT).show()
+                    val intent = Intent(this, MainActivity::class.java)
+                    startActivity(intent)
+                }
+                .setNegativeButton("CANCEL") { dialog, which ->
+                }
+                .show()
+        }
     }
 
     private fun diaryRegister() {

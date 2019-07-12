@@ -52,6 +52,7 @@ class PreviewActivity : AppCompatActivity() {
                 preview_image.setImageBitmap(photo)
             }
         }
+
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {

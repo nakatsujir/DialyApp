@@ -60,10 +60,6 @@ class EditActivity : AppCompatActivity() {
 
         mAuth = FirebaseAuth.getInstance()
 
-        edit_done_button.setOnClickListener {
-            diaryRegister()
-        }
-
         edit_day_text.setOnClickListener {
             showDatePickerDialog()
         }
@@ -88,11 +84,20 @@ class EditActivity : AppCompatActivity() {
             }
             setTitle("編集")
             invalidateOptionsMenu()
+
+            edit_done_button.setOnClickListener {
+                diaryUpdate()
+            }
+
         } else {
             //新規作成時
             setTitle("新規作成")
             isDeleteMenuVisible = false
             invalidateOptionsMenu()
+
+            edit_done_button.setOnClickListener {
+                diaryRegister()
+            }
         }
 
         edit_image.setOnClickListener {
@@ -222,7 +227,36 @@ class EditActivity : AppCompatActivity() {
 
             diaryRef.push().setValue(data)
             Toast.makeText(this, "保存しました。", Toast.LENGTH_SHORT).show()
-            finish()
+            transitionMain()
+        }
+    }
+
+    private fun diaryUpdate() {
+        val user = FirebaseAuth.getInstance().currentUser
+        if (user != null) {
+            val diaryDayRef = mDatabaseReference.child(DiaryPATH).child(user.uid).child(mDiary.diaryId).child("day")
+            val day = edit_day_text.text.toString()
+            diaryDayRef.setValue(day)
+
+            val diaryTitleRef = mDatabaseReference.child(DiaryPATH).child(user.uid).child(mDiary.diaryId).child("title")
+            val title = edit_title_edit.text.toString()
+            diaryTitleRef.setValue(title)
+
+            val diaryTextRef = mDatabaseReference.child(DiaryPATH).child(user.uid).child(mDiary.diaryId).child("text")
+            val text = edit_text_edit.text.toString()
+            diaryTextRef.setValue(text)
+
+            val diaryImageRef = mDatabaseReference.child(DiaryPATH).child(user.uid).child(mDiary.diaryId).child("image")
+            val image = edit_image.drawable as? BitmapDrawable
+            if (image != null) {
+                val bitmap = image.bitmap
+                val byte = ByteArrayOutputStream()
+                bitmap.compress(Bitmap.CompressFormat.JPEG, 100, byte)
+                val bitmapString = Base64.encodeToString(byte.toByteArray(), Base64.DEFAULT)
+                diaryImageRef.setValue(bitmapString)
+            }
+            Toast.makeText(this, "変更しました。", Toast.LENGTH_SHORT).show()
+            transitionMain()
         }
     }
 
@@ -332,7 +366,10 @@ class EditActivity : AppCompatActivity() {
         )
     }
 
-
+    private fun transitionMain(){
+        val intent = Intent(this,MainActivity::class.java)
+        startActivity(intent)
+    }
 }
 
 

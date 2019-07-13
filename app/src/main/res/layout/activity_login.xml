@@ -59,6 +59,16 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:visibility="gone" android:layout_centerVertical="true" android:layout_centerHorizontal="true"/>
+        <TextView
+                android:text="Application Privacy Policy"
+                android:layout_marginTop="20dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" android:id="@+id/textView"/>
+        <TextView
+                android:text="https://writening.net/page?Hczmwf"
+                android:autoLink="web"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" android:id="@+id/textView2"/>
     </LinearLayout>
 
 </RelativeLayout>
